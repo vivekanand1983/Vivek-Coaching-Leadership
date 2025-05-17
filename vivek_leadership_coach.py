@@ -35,8 +35,9 @@ st.title("Vivek Leadership Coach 🧠")
 st.markdown("Ask a leadership question based on insights from 15 top books.")
 
 query = st.text_input("Enter your leadership question:")
+submit = st.button("Submit")
 
-if query:
+if submit and query:
     query_vector = model.encode([query])
     D, I = index.search(query_vector, k=3)
 
