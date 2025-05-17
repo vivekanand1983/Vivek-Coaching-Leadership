@@ -3,10 +3,10 @@ import streamlit as st
 from typing import List
 from sentence_transformers import SentenceTransformer
 import faiss
-import openai
+from openai import OpenAI
 import os
 
-openai.api_key = st.secrets["OPENAI_API_KEY"]
+client = OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
 
 book_chunks = [
     {"text": "Level 5 Leadership is about humility + fierce resolve. This concept is central to Good to Great by Jim Collins.", "source": "Good to Great"},
@@ -46,7 +46,7 @@ if query:
     prompt = f"You are Vivek's Leadership Coach. Use the following excerpts from leadership books to answer the question.\n\nContext:\n{context}\n\nQuestion: {query}\nAnswer:"
 
     with st.spinner("Thinking like a Level 5 Leader..."):
-        response = openai.ChatCompletion.create(
+        response = client.chat.completions.create(
             model="gpt-4",
             messages=[
                 {"role": "system", "content": "You are a leadership coach trained on 15 classic books."},
@@ -55,7 +55,7 @@ if query:
             temperature=0.5
         )
 
-        answer = response['choices'][0]['message']['content']
+        answer = response.choices[0].message.content
         st.markdown("### Answer")
         st.write(answer)
 
