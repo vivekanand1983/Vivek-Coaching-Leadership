@@ -47,7 +47,7 @@ if query:
 
     with st.spinner("Thinking like a Level 5 Leader..."):
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-3.5-turbo",
             messages=[
                 {"role": "system", "content": "You are a leadership coach trained on 15 classic books."},
                 {"role": "user", "content": prompt},
