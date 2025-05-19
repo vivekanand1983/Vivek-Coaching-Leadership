@@ -6,7 +6,7 @@ import faiss
 from openai import OpenAI
 import os
 
-# Password prompt
+# Password protection
 password = st.text_input("Enter password to continue:", type="password")
 if password != "priyav@1983!":
     st.warning("Incorrect password.")
@@ -57,7 +57,7 @@ submit = st.button("Submit")
 
 if submit and query:
     query_vector = model.encode([query])
-    D, I = index.search(query_vector, k=3)
+    D, I = index.search(query_vector, k=5)
 
     retrieved_chunks = [texts[i] for i in I[0]]
     context = "\n".join(retrieved_chunks)
@@ -80,5 +80,6 @@ if submit and query:
 
         st.markdown("---")
         st.markdown("**Sources used:**")
-        for i in I[0]:
-            st.write(f"- {sources[i]}")
+        used_sources = list(set([sources[i] for i in I[0]]))
+        for src in used_sources:
+            st.write(f"- {src}")
